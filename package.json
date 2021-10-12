@@ -1,0 +1,36 @@
+{
+  "name": "laclient",
+  "description": "Electron-based Slack wrapper with auto-refresh functionality for 2U Learning Assistants",
+  "author": {
+    "name": "James Coon",
+    "email": "james@jcoon.dev",
+    "url": "https://jcoon.dev"
+  },
+  "license": "MIT",
+  "main": "dist/main.js",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcoon97/LAClient.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jcoon97/LAClient/issues"
+  },
+  "homepage": "https://github.com/jcoon97/LAClient#readme",
+  "scripts": {
+    "cleanbuild": "rimraf build dist && tsc",
+    "pack": "yarn run cleanbuild && electron-builder -lw --publish never",
+    "postinstall": "electron-builder install-app-deps",
+    "release": "yarn run cleanbuild && electron-builder --publish always",
+    "start:dev": "yarn run cleanbuild && cross-env NODE_ENV=development electron ."
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "cross-env": "^7.0.3",
+    "electron": "15.1.2",
+    "electron-builder": "^22.13.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.4.3"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "appId": "dev.jcoon.laclient",
+  "productName": "LAClient",
+  "copyright": "Copyright © 2021 James Coon",
+  "directories": {
+    "app": ".",
+    "output": "build"
+  },
+  "files": [
+    "dist/**/*",
+    "node_modules",
+    "package.json"
+  ],
+  "dmg": {
+    "background": null,
+    "backgroundColor": "#FFFFFF",
+    "window": {
+      "height": 400,
+      "width": 600
+    }
+  },
+  "linux": {
+    "category": "Utilities",
+    "target": "AppImage"
+  },
+  "mac": {
+    "category": "public.app-category.utilities",
+    "target": "dmg"
+  },
+  "win": {
+    "target": "nsis"
+  }
+}
