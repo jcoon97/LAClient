@@ -20,10 +20,11 @@
   "scripts": {
     "clean": "rimraf build dist",
     "build": "webpack --config webpack/webpack.config.ts --color --progress",
-    "cleanbuild": "yarn run clean && yarn run build",
-    "pack": "yarn run cleanbuild && electron-builder --publish never",
+    "cleanbuild": "pnpm run clean && pnpm run build",
+    "pack": "pnpm run cleanbuild && electron-builder --publish never",
+    "preinstall": "npx only-allow pnpm",
     "postinstall": "electron-builder install-app-deps",
-    "release": "yarn run cleanbuild && electron-builder --publish always",
+    "release": "pnpm run cleanbuild && electron-builder --publish always",
     "start:dev": "cross-env ELECTRON_IS_DEV=1 electron ./build/electron.bundle.js"
   },
   "devDependencies": {
