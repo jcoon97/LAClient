@@ -1,5 +1,5 @@
-import { hasAttributeAndEquals } from "../utils/element";
-import { DOM_SELECTORS, REFRESH_ICON_ATTR } from "./preloader";
+import { DOM_SELECTORS, REFRESH_ICON_ATTR } from "./preload";
+import { hasAttributeAndEquals } from "./utils";
 
 export class RefreshIconObserver {
     private isRunning: boolean;

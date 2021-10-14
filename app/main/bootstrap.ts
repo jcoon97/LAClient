@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from "electron";
 import isDev from "electron-is-dev";
-import * as path from "path";
+import path from "path";
 
 const createWindow = async (): Promise<void> => {
     const window: BrowserWindow = new BrowserWindow({
@@ -8,17 +8,14 @@ const createWindow = async (): Promise<void> => {
         width: 1200,
         webPreferences: {
             contextIsolation: true,
-            devTools: process.env.NODE_ENV === "development",
+            devTools: isDev,
             nodeIntegration: false,
-            preload: path.join(__dirname, "./preloader/preloader.js")
+            preload: path.join(__dirname, "./preload_slack.bundle.js")
         }
     });
 
     await window.loadURL("https://trilobot.slack.com");
-
-    if (isDev) {
-        window.webContents.openDevTools();
-    }
+    if (isDev) window.webContents.openDevTools();
 };
 
 app.on("activate", async (): Promise<void> => {

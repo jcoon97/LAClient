@@ -1,4 +1,4 @@
-import { DOM_SELECTORS } from "./preloader";
+import { DOM_SELECTORS } from "./preload";
 import { RefreshIconObserver } from "./RefreshIconObserver";
 
 export interface RefreshTimerOptions {
