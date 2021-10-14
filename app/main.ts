@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from "electron";
+import isDev from "electron-is-dev";
 import * as path from "path";
 
 const createWindow = async (): Promise<void> => {
@@ -15,7 +16,7 @@ const createWindow = async (): Promise<void> => {
 
     await window.loadURL("https://trilobot.slack.com");
 
-    if (process.env.NODE_ENV === "development") {
+    if (isDev) {
         window.webContents.openDevTools();
     }
 };
