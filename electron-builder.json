@@ -4,10 +4,10 @@
   "copyright": "Copyright © 2021 James Coon",
   "directories": {
     "app": ".",
-    "output": "build"
+    "output": "dist"
   },
   "files": [
-    "dist/**/*",
+    "build/**/*",
     "node_modules",
     "package.json"
   ],
