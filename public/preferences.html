@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Preferences | LAClient</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/preferences.css" rel="stylesheet" />
+</head>
+
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8 mx-auto">
+            <div class="my-4">
+                <h5 class="mb-0 mt-5">LAClient Settings</h5>
+                <p>Settings will automatically save once changed</p>
+
+                <hr class="my-4" />
+
+                <strong class="mb-0">General</strong>
+                <p>General settings, such as <em>desktop notifications</em> and <em>zoom level</em></p>
+
+                <div class="list-group mb-5 shadow">
+                    <div class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <strong class="mb-0">Unusual activity notifications</strong>
+                                <p class="text-muted mb-0">Donec in quam sed urna bibendum tincidunt quis mollis
+                                    mauris.</p>
+                            </div>
+                            <div class="col-auto">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="alert1" checked="" />
+                                    <span class="custom-control-label"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <strong class="mb-0">Unauthorized financial activity</strong>
+                                <p class="text-muted mb-0">Fusce lacinia elementum eros, sed vulputate urna eleifend
+                                    nec.</p>
+                            </div>
+                            <div class="col-auto">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="alert2" />
+                                    <span class="custom-control-label"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./renderer_preferences.bundle.js"></script>
+</body>
+</html>
