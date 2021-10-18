@@ -1,21 +1,32 @@
-import { app, BrowserWindow, Menu, MenuItemConstructorOptions, shell } from "electron";
+import { Menu, MenuItemConstructorOptions, shell } from "electron";
+import { CLIENT_CONSTANTS } from "./app";
 import { createPreferencesWindow } from "./main/preferences";
 
 export const setApplicationMenu = (): void => {
     const menuItems: MenuItemConstructorOptions[] = [
         {
-            label: "LAClient",
+            label: "File",
             submenu: [
+                { role: "close" },
                 {
-                    label: "Close",
-                    accelerator: "CommandOrControl+C",
-                    click: () => BrowserWindow.getFocusedWindow()?.close()
-                },
-                {
-                    label: "Quit",
-                    accelerator: "CommandOrControl+Q",
-                    click: () => app.quit()
+                    label: `Quit ${ CLIENT_CONSTANTS.NAME }`,
+                    accelerator: "CmdOrCtrl+Q",
+                    role: "quit"
                 }
+            ]
+        },
+        {
+            label: "View",
+            submenu: [
+                { role: "reload" },
+                { role: "forceReload" },
+                { type: "separator" },
+                { role: "toggleDevTools" },
+                { role: "togglefullscreen" },
+                { type: "separator" },
+                { role: "resetZoom" },
+                { role: "zoomIn" },
+                { role: "zoomOut" }
             ]
         },
         {
@@ -27,19 +38,19 @@ export const setApplicationMenu = (): void => {
             submenu: [
                 {
                     label: "Repository",
-                    click: async () => await shell.openExternal("https://github.com/jcoon97/LAClient")
+                    click: async () => await shell.openExternal(CLIENT_CONSTANTS.BASE_URL)
                 },
                 {
                     label: "Report Issue...",
-                    click: async () => await shell.openExternal("https://github.com/jcoon97/LAClient/issues/new")
+                    click: async () => await shell.openExternal(CLIENT_CONSTANTS.BASE_URL + "/issues/new")
                 },
                 {
                     label: "What's New...",
-                    click: async () => await shell.openExternal("https://github.com/jcoon97/LAClient/releases")
+                    click: async () => await shell.openExternal(CLIENT_CONSTANTS.BASE_URL + "/releases")
                 },
                 { type: "separator" },
                 {
-                    label: `Version: ${ app.getVersion() }`
+                    label: `Current Version: ${ CLIENT_CONSTANTS.VERSION }`
                 }
             ]
         }
