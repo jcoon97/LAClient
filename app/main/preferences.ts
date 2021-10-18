@@ -19,6 +19,8 @@ export const createPreferencesWindow = async (): Promise<void> => {
     const window: BrowserWindow | null = windowManager.createWindow(WindowName.PREFERENCES, {
         height: 400,
         width: 800,
+        maximizable: false,
+        resizable: false,
         webPreferences: {
             contextIsolation: true,
             nodeIntegration: false,

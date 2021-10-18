@@ -24,24 +24,13 @@ export class WindowManager {
             }
         }
 
-        let x: number | undefined, y: number | undefined;
-        const currentWindow: BrowserWindow | null = BrowserWindow.getFocusedWindow();
-
-        if (currentWindow) {
-            const [ posX, posY ] = currentWindow.getPosition();
-            x = posX + 20;
-            y = posY + 20;
-        }
-
         const newWindow: BrowserWindow = new BrowserWindow({
             ...options,
             show: false,
             webPreferences: {
                 ...options?.webPreferences,
                 devTools: isDev
-            },
-            x,
-            y
+            }
         });
 
         newWindow.on("closed", (): void => {
