@@ -1,17 +1,15 @@
-import { BrowserWindow, ipcMain, IpcMainEvent } from "electron";
+import { BrowserWindow, ipcMain, IpcMainEvent, IpcMainInvokeEvent } from "electron";
 import * as path from "path";
 import { WindowManager, WindowName } from "../WindowManager";
 
-type IPCPreferencesValue = boolean | null | number | string;
-
-interface IPCPreferences {
+interface IpcPreferences {
     name?: string;
-    value?: IPCPreferencesValue;
+    value?: IpcPreferencesValue;
 }
 
-type GetIPCPreferences = Required<Pick<IPCPreferences, "name">>;
-
-type SetIPCPreferences = Required<IPCPreferences>;
+type GetIpcPreferences = Required<Pick<IpcPreferences, "name">>;
+type SetIpcPreferences = Required<IpcPreferences>;
+type IpcPreferencesValue = boolean | null | number | string;
 
 const windowManager: WindowManager = WindowManager.getManager();
 
@@ -31,12 +29,10 @@ export const createPreferencesWindow = async (): Promise<void> => {
     if (window) await window.loadFile("./preferences.html");
 };
 
-ipcMain.on("getPreferences", (_: IpcMainEvent, args: GetIPCPreferences) => {
+ipcMain.handle("getPreferences", async (_: IpcMainInvokeEvent, args: GetIpcPreferences): Promise<void> => {
     console.log(`getPreferences(${ JSON.stringify(args) })`);
-    // event.returnValue = getPreference(arg.name);
 });
 
-ipcMain.on("setPreferences", async (_: IpcMainEvent, args: SetIPCPreferences) => {
-    console.log(`setPreferences(${ JSON.stringify(args) })`);
-    // setPreference(arg.name, arg.value);
+ipcMain.on("setPreferences", async (_: IpcMainEvent, args: SetIpcPreferences): Promise<void> => {
+    console.log(`setPreferences(name: '${ args.name }', value: '${ args.value }')`);
 });
