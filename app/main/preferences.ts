@@ -26,7 +26,7 @@ export const createPreferencesWindow = async (): Promise<void> => {
         }
     });
 
-    if (window) await window.loadFile("./preferences.html");
+    if (window) await window.loadFile(path.join(__dirname, "preferences.html"));
 };
 
 ipcMain.handle("getPreferences", async (_: IpcMainInvokeEvent, args: GetIpcPreferences): Promise<void> => {
