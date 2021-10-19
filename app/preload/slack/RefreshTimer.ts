@@ -25,10 +25,12 @@ export class RefreshTimer {
     }
 
     changeOptions(options: Partial<RefreshTimerOptions>): void {
+        if (this.isEnabled()) this.stopTimer();
         this.options = { ...this.options, ...options };
+        if (this.isEnabled()) this.startTimer();
     }
 
-    isEnabled(): boolean {
+    private isEnabled(): boolean {
         return this.options.isEnabled;
     }
 

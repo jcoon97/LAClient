@@ -39,17 +39,13 @@ ipcReceive<IpcPreferences>("onPreferencesUpdated", (args: IpcPreferences): void 
     if (args.name === "enableRefresh") {
         if (<boolean>args.value) {
             refreshTimer.changeOptions({ isEnabled: true });
-            refreshTimer.startTimer();
         } else {
             refreshTimer.changeOptions({ isEnabled: false });
-            refreshTimer.stopTimer();
         }
     }
 
     // Update the second(s) to wait before refreshing
     if (args.name === "refreshInterval") {
-        if (refreshTimer.isEnabled()) refreshTimer.stopTimer();
         refreshTimer.changeOptions({ refreshRate: <number>args.value });
-        if (refreshTimer.isEnabled()) refreshTimer.startTimer();
     }
 });
