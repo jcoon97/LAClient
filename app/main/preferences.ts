@@ -1,15 +1,7 @@
-import { BrowserWindow, ipcMain, IpcMainEvent, IpcMainInvokeEvent } from "electron";
+import { BrowserWindow, ipcMain } from "electron";
+import { get as getSetting, set as setSetting } from "electron-settings";
 import * as path from "path";
 import { WindowManager, WindowName } from "../WindowManager";
-
-interface IpcPreferences {
-    name?: string;
-    value?: IpcPreferencesValue;
-}
-
-type GetIpcPreferences = Required<Pick<IpcPreferences, "name">>;
-type SetIpcPreferences = Required<IpcPreferences>;
-type IpcPreferencesValue = boolean | null | number | string;
 
 const windowManager: WindowManager = WindowManager.getManager();
 
@@ -19,6 +11,7 @@ export const createPreferencesWindow = async (): Promise<void> => {
         width: 800,
         maximizable: false,
         resizable: false,
+        autoHideMenuBar: true,
         webPreferences: {
             contextIsolation: true,
             nodeIntegration: false,
@@ -29,10 +22,16 @@ export const createPreferencesWindow = async (): Promise<void> => {
     if (window) await window.loadFile(path.join(__dirname, "preferences.html"));
 };
 
-ipcMain.handle("getPreferences", async (_: IpcMainInvokeEvent, args: GetIpcPreferences): Promise<void> => {
-    console.log(`getPreferences(${ JSON.stringify(args) })`);
+// Return a specific preference value when requested from the renderer context
+ipcMain.handle("getPreferences", async (_, args: GetIpcPreferences): Promise<IpcPreferencesValue> => {
+    return <IpcPreferencesValue>await getSetting(args.name);
 });
 
-ipcMain.on("setPreferences", async (_: IpcMainEvent, args: SetIpcPreferences): Promise<void> => {
-    console.log(`setPreferences(name: '${ args.name }', value: '${ args.value }')`);
+// Modify the specified name (key) to have the specified value in the user's settings file.
+// Additionally, once the modification has been made, send a notification to the Slack renderer
+// process to allow any updates to persist across windows (e.g. enable/disable refresh timer, etc.)
+ipcMain.on("setPreferences", async (_, args: SetIpcPreferences): Promise<void> => {
+    await setSetting(args.name, args.value);
+    const mainWindow: BrowserWindow | undefined = windowManager.getWindow(WindowName.SLACK);
+    if (mainWindow) mainWindow.webContents.send("onPreferencesUpdated", args);
 });

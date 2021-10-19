@@ -1,7 +1,28 @@
-declare type IpcChannelNames = "getPreferences" | "setPreferences";
+declare interface IpcPreferences {
+    name?: string;
+    value?: IpcPreferencesValue;
+}
+
+declare type IpcChannelName = "getPreferences" | "onPreferencesUpdated" | "setPreferences";
+
+declare type GetIpcPreferences = Required<Pick<IpcPreferences, "name">>;
+
+declare type SetIpcPreferences = Required<IpcPreferences>;
+
+declare type IpcPreferencesValue = boolean | null | number | string;
 
 declare interface Window {
     electron: {
+        /**
+         * Listen for a message from the main process via a specific `channel`, and if one
+         * is received, execute the `callback` function with the message arguments.
+         *
+         * @param channel - The channel name that will be listened on
+         * @param callback - The callback function that will be called when a message is
+         * received from the main process on the specified `channel`
+         */
+        receive: <T>(channel: IpcChannelName, callback: (args: T) => void) => void;
+
         /**
          * Send a message to the main process via `channel`, along with arguments.
          *
@@ -13,7 +34,7 @@ declare interface Window {
          * @param channel - The channel name that the main process will use to process this message
          * @param args - The argument(s) that will be sent to the main process with this message
          */
-        send: (channel: IpcChannelNames, args: any) => void;
+        send: <T>(channel: IpcChannelName, args: T) => void;
 
         /**
          * Send a message to the main process via `channel`, along with arguments.
@@ -27,6 +48,6 @@ declare interface Window {
          *
          * @returns The response that is sent back from the main process, if any is returned
          */
-        invoke: (channel: IpcChannelNames, args: any) => Promise<any>;
+        invoke: <S, R>(channel: IpcChannelName, args: S) => Promise<R>;
     };
 }

@@ -1,3 +1,4 @@
+import { ipcInvoke, ipcReceive } from "../preload";
 import { RefreshTimer } from "./RefreshTimer";
 
 export const REFRESH_ICON_ATTR = {
@@ -10,10 +11,45 @@ export const DOM_SELECTORS = {
     REFRESH_ICON_PARENT: "div.p-section_block__icons"
 };
 
-const refreshTimer: RefreshTimer = new RefreshTimer({
-    refreshRate: 15
-});
+// When the script loads, this function should immediately get called, which
+// will bootstrap the refresh timer by grabbing any user preferences that are
+// saved and loading them in. If none are saved, defaults will be used instead.
+let refreshTimer: RefreshTimer | undefined;
 
-window.addEventListener("load", () => {
-    refreshTimer.startTimer();
+const loadTimer = async (): Promise<void> => {
+    const isEnabled: boolean = <boolean>await ipcInvoke<GetIpcPreferences, IpcPreferencesValue>(
+        "getPreferences", { name: "enableRefresh" }
+    ) ?? RefreshTimer.DEFAULT_OPTIONS.isEnabled;
+
+    const refreshRate: number = <number>await ipcInvoke<GetIpcPreferences, IpcPreferencesValue>(
+        "getPreferences", { name: "refreshInterval" }
+    ) ?? RefreshTimer.DEFAULT_OPTIONS.refreshRate;
+
+    refreshTimer = new RefreshTimer({ isEnabled, refreshRate });
+};
+
+loadTimer();
+
+// Update the timer if the user preferences change
+ipcReceive<IpcPreferences>("onPreferencesUpdated", (args: IpcPreferences): void => {
+    // If our timer has not been initiated or an instance of it does not exist, exit now
+    if (!refreshTimer) return;
+
+    // Enable/disable the refresh timer
+    if (args.name === "enableRefresh") {
+        if (<boolean>args.value) {
+            refreshTimer.changeOptions({ isEnabled: true });
+            refreshTimer.startTimer();
+        } else {
+            refreshTimer.changeOptions({ isEnabled: false });
+            refreshTimer.stopTimer();
+        }
+    }
+
+    // Update the second(s) to wait before refreshing
+    if (args.name === "refreshInterval") {
+        if (refreshTimer.isEnabled()) refreshTimer.stopTimer();
+        refreshTimer.changeOptions({ refreshRate: <number>args.value });
+        if (refreshTimer.isEnabled()) refreshTimer.startTimer();
+    }
 });

@@ -46,6 +46,10 @@ export class WindowManager {
         return newWindow;
     }
 
+    getWindow(name: WindowName): BrowserWindow | undefined {
+        return this.windows.get(name);
+    }
+
     static getManager(): WindowManager {
         if (!WindowManager.INSTANCE) {
             WindowManager.INSTANCE = new WindowManager();

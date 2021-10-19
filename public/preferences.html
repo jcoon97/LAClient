@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <title>Preferences | LAClient</title>
+    <title>Preferences</title>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,25 +15,26 @@
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8 mx-auto">
             <div class="my-4">
-                <h5 class="mb-0 mt-5">LAClient Settings</h5>
-                <p>Settings will automatically save once changed</p>
+                <h5 class="mb-0 mt-5">LAClient Preferences</h5>
+                <p>When a change is made on this page, its state is automatically saved to your device</p>
 
                 <hr class="my-4" />
 
-                <strong class="mb-0">General</strong>
-                <p>General settings, such as <em>desktop notifications</em> and <em>zoom level</em></p>
+                <strong class="mb-0">Auto Refresher</strong>
+                <p>Modify the automatic refresh functionality of this application</p>
 
                 <div class="list-group mb-5 shadow">
                     <div class="list-group-item">
                         <div class="row align-items-center">
                             <div class="col">
-                                <strong class="mb-0">Unusual activity notifications</strong>
-                                <p class="text-muted mb-0">Donec in quam sed urna bibendum tincidunt quis mollis
-                                    mauris.</p>
+                                <strong class="mb-0">Enabled</strong>
+                                <p class="text-muted mb-0">If checked, the AskBCS student queue will automatically be
+                                    refreshed</p>
                             </div>
                             <div class="col-auto">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="alert1" checked="" />
+                                    <input type="checkbox" class="custom-control-input"
+                                           data-pref-name="enableRefresh" />
                                     <span class="custom-control-label"></span>
                                 </div>
                             </div>
@@ -43,14 +44,16 @@
                     <div class="list-group-item">
                         <div class="row align-items-center">
                             <div class="col">
-                                <strong class="mb-0">Unauthorized financial activity</strong>
-                                <p class="text-muted mb-0">Fusce lacinia elementum eros, sed vulputate urna eleifend
-                                    nec.</p>
+                                <strong class="mb-0">Refresh Interval</strong>
+                                <p class="text-muted mb-0">The amount of time (in seconds) before the queue is
+                                    refreshed</p>
                             </div>
                             <div class="col-auto">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="alert2" />
-                                    <span class="custom-control-label"></span>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" data-pref-name="refreshInterval" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">second(s)</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
