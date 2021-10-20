@@ -37,6 +37,7 @@ const onPreferenceChanged = (event: Event): void => {
     const prefValue: unknown = getInputValue(element);
 
     if (!prefName) return;
+    if (typeof prefValue !== "boolean" && !prefValue) return;
 
     window.electron.send<IpcSetPreference>("setPreference", {
         key: prefName,
