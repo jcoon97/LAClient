@@ -2,23 +2,36 @@ import { DOM_SELECTORS } from "./preload";
 import { RefreshIconObserver } from "./RefreshIconObserver";
 
 export interface RefreshTimerOptions {
+    isEnabled: boolean;
     onRefresh: (() => void) | null;
     refreshRate: number;
 }
 
 export class RefreshTimer {
     static DEFAULT_OPTIONS: RefreshTimerOptions = {
+        isEnabled: true,
         onRefresh: null,
-        refreshRate: 10
+        refreshRate: 15
     };
 
-    private readonly iconObserver: RefreshIconObserver;
-    private readonly options: RefreshTimerOptions;
+    private options: RefreshTimerOptions;
     private timerId: NodeJS.Timer | undefined;
+    private readonly iconObserver: RefreshIconObserver;
 
     constructor(options?: Partial<RefreshTimerOptions>) {
         this.options = { ...RefreshTimer.DEFAULT_OPTIONS, ...options };
         this.iconObserver = new RefreshIconObserver(() => this.options.onRefresh?.());
+        if (this.options.isEnabled) this.startTimer();
+    }
+
+    changeOptions(options: Partial<RefreshTimerOptions>): void {
+        if (this.isEnabled()) this.stopTimer();
+        this.options = { ...this.options, ...options };
+        if (this.isEnabled()) this.startTimer();
+    }
+
+    private isEnabled(): boolean {
+        return this.options.isEnabled;
     }
 
     protected run(): void {
@@ -33,5 +46,11 @@ export class RefreshTimer {
     startTimer(): void {
         if (this.timerId) return;
         this.timerId = setInterval(this.run.bind(this), (this.options.refreshRate * 1000));
+    }
+
+    stopTimer(): void {
+        if (!this.timerId) return;
+        clearInterval(this.timerId);
+        this.timerId = undefined;
     }
 }

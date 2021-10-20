@@ -1,5 +1,4 @@
 import { DOM_SELECTORS, REFRESH_ICON_ATTR } from "./preload";
-import { hasAttributeAndEquals } from "./utils";
 
 export class RefreshIconObserver {
     private isRunning: boolean;
@@ -29,13 +28,16 @@ export class RefreshIconObserver {
         this.isRunning = true;
     }
 
+    private hasAttributeAndEquals = (element: HTMLElement, name: string, value: string): boolean =>
+        element.hasAttribute(name) && element.getAttribute(name) === value;
+
     private onObserverRun(mutations: MutationRecord[]): void {
         mutations.forEach((mutation: MutationRecord) => {
             mutation.removedNodes.forEach((node: Node) => {
                 if (node.nodeType === Node.ELEMENT_NODE) {
                     const element: HTMLDivElement = <HTMLDivElement>node;
 
-                    if (hasAttributeAndEquals(element, REFRESH_ICON_ATTR.NAME, REFRESH_ICON_ATTR.VALUE)) {
+                    if (this.hasAttributeAndEquals(element, REFRESH_ICON_ATTR.NAME, REFRESH_ICON_ATTR.VALUE)) {
                         this.disableObserver();
                         this.onFinished?.();
                     }

@@ -2,7 +2,6 @@
   "compilerOptions": {
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./app",
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -11,6 +10,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "pretty": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
     "target": "es6"
