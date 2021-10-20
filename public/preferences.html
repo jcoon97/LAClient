@@ -15,8 +15,16 @@
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8 mx-auto">
             <div class="my-4">
-                <h5 class="mb-0 mt-5">LAClient Preferences</h5>
-                <p>When a change is made on this page, its state is automatically saved to your device</p>
+                <div class="clearfix">
+                    <div class="float-start">
+                        <h5 class="mb-0 mt-5">LAClient Preferences</h5>
+                        <p>When a change is made on this page, its state is automatically saved to your device</p>
+                    </div>
+
+                    <div class="float-end">
+                        <button type="button" class="btn btn-danger mb-0 mt-5" id="btnReset">Reset Preferences</button>
+                    </div>
+                </div>
 
                 <hr class="my-4" />
 
@@ -28,13 +36,13 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <strong class="mb-0">Enabled</strong>
-                                <p class="text-muted mb-0">If checked, the AskBCS student queue will automatically be
-                                    refreshed</p>
+                                <p class="text-muted mb-0">When checked, the AskBCS student queue will automatically
+                                    refresh</p>
                             </div>
                             <div class="col-auto">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input"
-                                           data-pref-name="enableRefresh" />
+                                           data-pref-name="autoRefresh.enabled" />
                                     <span class="custom-control-label"></span>
                                 </div>
                             </div>
@@ -45,13 +53,13 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <strong class="mb-0">Refresh Interval</strong>
-                                <p class="text-muted mb-0">The amount of time (in seconds) before the queue is
-                                    refreshed</p>
+                                <p class="text-muted mb-0">The amount of time (in seconds) between automatic
+                                    refreshes</p>
                             </div>
                             <div class="col-auto">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" data-pref-name="refreshInterval" min="5"
-                                           max="60" />
+                                    <input type="number" class="form-control" min="5" max="60"
+                                           data-pref-name="autoRefresh.interval" />
                                     <div class="input-group-append">
                                         <span class="input-group-text">second(s)</span>
                                     </div>

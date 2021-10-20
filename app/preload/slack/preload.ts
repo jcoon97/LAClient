@@ -16,36 +16,47 @@ export const DOM_SELECTORS = {
 // saved and loading them in. If none are saved, defaults will be used instead.
 let refreshTimer: RefreshTimer | undefined;
 
-const loadTimer = async (): Promise<void> => {
-    const isEnabled: boolean = <boolean>await ipcInvoke<GetIpcPreferences, IpcPreferencesValue>(
-        "getPreferences", { name: "enableRefresh" }
-    ) ?? RefreshTimer.DEFAULT_OPTIONS.isEnabled;
+const loadTimer = async (reload?: boolean): Promise<void> => {
+    const isEnabled: boolean = await ipcInvoke<boolean, IpcGetPreference>("getPreference", {
+        key: "autoRefresh.enabled"
+    });
 
-    const refreshRate: number = <number>await ipcInvoke<GetIpcPreferences, IpcPreferencesValue>(
-        "getPreferences", { name: "refreshInterval" }
-    ) ?? RefreshTimer.DEFAULT_OPTIONS.refreshRate;
+    const refreshRate: number = await ipcInvoke<number, IpcGetPreference>("getPreference", {
+        key: "autoRefresh.interval"
+    });
 
-    refreshTimer = new RefreshTimer({ isEnabled, refreshRate });
+    if (reload) {
+        refreshTimer?.changeOptions({ isEnabled, refreshRate });
+    } else {
+        refreshTimer = new RefreshTimer({ isEnabled, refreshRate });
+    }
+};
+
+// Update the `RefreshTimer` object to reflect any changes the user may have made
+// when updating their app preferences
+const registerPreferenceUpdated = () => {
+    ipcReceive<IpcPreference>("onPreferenceUpdated", (args: IpcPreference | undefined): void => {
+        // If our timer has not been initiated or an instance of it does not exist, exit now
+        if (!refreshTimer) return;
+
+        // Enable/disable the refresh timer
+        if (args?.key === "autoRefresh.enabled") {
+            refreshTimer.changeOptions({ isEnabled: <boolean>args.value });
+        }
+
+        // Update the second(s) to wait before refreshing
+        if (args?.key === "autoRefresh.interval") {
+            refreshTimer.changeOptions({ refreshRate: <number>args.value });
+        }
+    });
+};
+
+// If the user resets all of their preferences, re-call `loadTimer` to update
+// all internally stored user preferences to their new state(s)
+const registerPreferencesReset = () => {
+    ipcReceive("onPreferencesReset", async (): Promise<void> => await loadTimer(true));
 };
 
 loadTimer();
-
-// Update the timer if the user preferences change
-ipcReceive<IpcPreferences>("onPreferencesUpdated", (args: IpcPreferences): void => {
-    // If our timer has not been initiated or an instance of it does not exist, exit now
-    if (!refreshTimer) return;
-
-    // Enable/disable the refresh timer
-    if (args.name === "enableRefresh") {
-        if (<boolean>args.value) {
-            refreshTimer.changeOptions({ isEnabled: true });
-        } else {
-            refreshTimer.changeOptions({ isEnabled: false });
-        }
-    }
-
-    // Update the second(s) to wait before refreshing
-    if (args.name === "refreshInterval") {
-        refreshTimer.changeOptions({ refreshRate: <number>args.value });
-    }
-});
+registerPreferenceUpdated();
+registerPreferencesReset();

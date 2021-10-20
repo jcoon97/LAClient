@@ -1,15 +1,38 @@
-declare interface IpcPreferences {
-    name?: string;
-    value?: IpcPreferencesValue;
+declare type IpcChannelName =
+    "getPreference"
+    | "onPreferenceUpdated"
+    | "onPreferencesReset"
+    | "resetPreferences"
+    | "setPreference";
+
+declare interface IpcPreference {
+    key?: string;
+    value?: unknown;
 }
 
-declare type IpcChannelName = "getPreferences" | "onPreferencesUpdated" | "setPreferences";
+declare type IpcGetPreference = Required<Pick<IpcPreference, "key">>;
 
-declare type GetIpcPreferences = Required<Pick<IpcPreferences, "name">>;
+declare type IpcSetPreference = Required<IpcPreference>;
 
-declare type SetIpcPreferences = Required<IpcPreferences>;
+/**
+ * `electron-store` interface that will define the schema used for user preferences,
+ * which can be modified by the user in the preferences window.
+ */
+declare type PreferencesStore = {
+    autoRefresh: {
+        /**
+         * If enabled, the AskBCS queue will automatically refresh when the user is
+         * currently viewing the "AskBCS Learning Assistant" app page on Slack
+         */
+        enabled: boolean;
 
-declare type IpcPreferencesValue = boolean | null | number | string;
+        /**
+         * The amount of time (in seconds) that will elapse between each attempt to
+         * refresh the AskBCS queue
+         */
+        interval: number;
+    };
+}
 
 declare interface Window {
     electron: {
@@ -21,7 +44,7 @@ declare interface Window {
          * @param callback - The callback function that will be called when a message is
          * received from the main process on the specified `channel`
          */
-        receive: <T>(channel: IpcChannelName, callback: (args: T) => void) => void;
+        receive: <T = void>(channel: IpcChannelName, callback: (args?: T) => void) => void;
 
         /**
          * Send a message to the main process via `channel`, along with arguments.
@@ -34,7 +57,7 @@ declare interface Window {
          * @param channel - The channel name that the main process will use to process this message
          * @param args - The argument(s) that will be sent to the main process with this message
          */
-        send: <T>(channel: IpcChannelName, args: T) => void;
+        send: <T>(channel: IpcChannelName, args?: T) => void;
 
         /**
          * Send a message to the main process via `channel`, along with arguments.
@@ -48,6 +71,6 @@ declare interface Window {
          *
          * @returns The response that is sent back from the main process, if any is returned
          */
-        invoke: <S, R>(channel: IpcChannelName, args: S) => Promise<R>;
+        invoke: <R, S = void>(channel: IpcChannelName, args?: S) => Promise<R>;
     };
 }
