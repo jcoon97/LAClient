@@ -1,4 +1,4 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow, HandlerDetails, shell } from "electron";
 import path from "path";
 import { WindowManager, WindowName } from "../WindowManager";
 
@@ -15,5 +15,12 @@ export const createSlackWindow = async (): Promise<void> => {
         }
     });
 
-    if (window) await window.loadURL("https://trilobot.slack.com");
+    if (window) {
+        await window.loadURL("https://trilobot.slack.com");
+
+        window.webContents.setWindowOpenHandler(({ url }: HandlerDetails) => {
+            shell.openExternal(url);
+            return { action: "deny" };
+        });
+    }
 };
