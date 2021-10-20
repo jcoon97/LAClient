@@ -1,4 +1,5 @@
 import { BrowserWindow } from "electron";
+import contextMenu from "electron-context-menu";
 import path from "path";
 import { WindowManager, WindowName } from "../WindowManager";
 
@@ -11,9 +12,13 @@ export const createSlackWindow = async (): Promise<void> => {
         webPreferences: {
             contextIsolation: true,
             nodeIntegration: false,
-            preload: path.join(__dirname, "preload_slack.bundle.js")
+            preload: path.join(__dirname, "preload_slack.bundle.js"),
+            spellcheck: true
         }
     });
 
-    if (window) await window.loadURL("https://trilobot.slack.com");
+    if (window) {
+        await window.loadURL("https://trilobot.slack.com");
+        contextMenu({ window });
+    }
 };
