@@ -36,8 +36,9 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <strong class="mb-0">Enabled</strong>
-                                <p class="text-muted mb-0">When checked, the AskBCS student queue will automatically
-                                    refresh</p>
+                                <p class="text-muted mb-0">
+                                    When checked, the AskBCS student queue will automatically refresh
+                                </p>
                             </div>
                             <div class="col-auto">
                                 <div class="custom-control custom-switch">
@@ -53,8 +54,8 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <strong class="mb-0">Refresh Interval</strong>
-                                <p class="text-muted mb-0">The amount of time (in seconds) between automatic
-                                    refreshes</p>
+                                <p class="text-muted mb-0">
+                                    The amount of time (in seconds) between automatic refreshes</p>
                             </div>
                             <div class="col-auto">
                                 <div class="input-group">
@@ -65,6 +66,99 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <div class="float-start">
+                    <strong class="mb-0">Audio Notification</strong>
+                    <p>Modify the audio notification functionality for when a new AskBCS question is detected</p>
+                </div>
+
+                <div class="float-end">
+                    <button type="button" class="btn btn-primary mb-0" id="btnTestNotification">
+                        Test Notification
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- Audio Notification: Enabled -->
+            <div class="list-group mb-5 shadow">
+                <div class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <strong class="mb-0">Enabled</strong>
+                            <p class="text-muted mb-0">
+                                When checked, if a new question is found in the queue, an alert will be played
+                            </p>
+                        </div>
+                        <div class="col-auto">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input"
+                                       data-pref-name="audioNotify.enabled" />
+                                <span class="custom-control-label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Notification: Audio File -->
+                <div class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <strong class="mb-0">Audio File</strong>
+                            <p class="text-muted mb-0">
+                                The audio file to be played when a new question is found in the queue
+                            </p>
+                        </div>
+                        <div class="col-auto">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-outline-secondary" id="audioBtn">Browse...</button>
+                                <input type="text" class="form-control" data-pref-name="audioNotify.filePath"
+                                       disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Notification: Timeout -->
+                <div class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <strong class="mb-0">Timeout</strong>
+                            <p class="text-muted mb-0">
+                                The amount of time (in seconds) that should elapse before another alert is played
+                            </p>
+                        </div>
+                        <div class="col-auto">
+                            <div class="input-group">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" min="5" max="300"
+                                           data-pref-name="audioNotify.timeout" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">second(s)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Notification: Playback Volume -->
+                <div class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <strong class="mb-0">Playback Volume</strong>
+                            <p class="text-muted mb-0">
+                                The volume at which the audio file will be played at (range is from 0.0 to 1.0)
+                            </p>
+                        </div>
+                        <div class="col-auto">
+                            <input type="range" class="form-range" min="0" max="1" step="0.1"
+                                   data-pref-name="audioNotify.volume" />
                         </div>
                     </div>
                 </div>
