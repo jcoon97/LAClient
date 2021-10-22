@@ -1,9 +1,12 @@
 declare type IpcChannelName =
-    "getPreference"
+    "getNotificationSound"
+    | "getPreference"
+    | "openAudioFile"
     | "onPreferenceUpdated"
     | "onPreferencesReset"
     | "resetPreferences"
-    | "setPreference";
+    | "setPreference"
+    | "testNotification";
 
 declare interface IpcPreference {
     key?: string;
@@ -32,6 +35,32 @@ declare type PreferencesStore = {
          */
         interval: number;
     };
+
+    audioNotify: {
+        /**
+         * If enabled, when the AskBCS queue refreshes and a new question is found
+         * in the queue, an audio file (specified below) will play for the user
+         */
+        enabled: boolean;
+
+        /**
+         * The absolute file path to the audio file that will be played when a new
+         * question is found in the AskBCS queue
+         */
+        filePath: string | undefined
+
+        /**
+         * The amount of time (in seconds) that should elapse before a new notification
+         * is played, if there are still question(s) in the AskBCS queue
+         */
+        timeout: number;
+
+        /**
+         * The volume at which this audio notification will play at for the user. Currently,
+         * the range is from 0.0 to 1.0.
+         */
+        volume: number;
+    }
 }
 
 declare interface Window {
@@ -57,7 +86,7 @@ declare interface Window {
          * @param channel - The channel name that the main process will use to process this message
          * @param args - The argument(s) that will be sent to the main process with this message
          */
-        send: <T>(channel: IpcChannelName, args?: T) => void;
+        send: <T = void>(channel: IpcChannelName, args?: T) => void;
 
         /**
          * Send a message to the main process via `channel`, along with arguments.

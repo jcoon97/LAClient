@@ -16,6 +16,9 @@ export const setApplicationMenu = (): void => {
             ]
         },
         {
+            role: "editMenu"
+        },
+        {
             label: "View",
             submenu: [
                 { role: "reload" },

@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "allowJs": false,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "checkJs": false,
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -13,7 +14,13 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es6"
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es5",
+      "es6"
+    ]
   },
   "exclude": [
     "node_modules"
