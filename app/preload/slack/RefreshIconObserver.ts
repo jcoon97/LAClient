@@ -19,8 +19,8 @@ export class RefreshIconObserver {
     }
 
     enableObserver(): void {
-        if (this.isRunning) return;
-
+        // Since `MutationObserver.observe()` will remove all current observers if any are
+        // running, we don't need to check if this observer is already running beforehand
         this.mutationObserver.observe(<Node>document.querySelector(DOM_SELECTORS.REFRESH_ICON_PARENT), {
             childList: true,
             subtree: false

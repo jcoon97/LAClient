@@ -1,4 +1,5 @@
 const btnReset: HTMLElement | null = document.getElementById("btnReset");
+const audioFileButton: HTMLButtonElement | null = document.querySelector("button#audioBtn");
 const inputElements: NodeListOf<HTMLInputElement> = document.querySelectorAll("input[data-pref-name]");
 
 // When setting a new value, grab the "value" from the element. For example, it will usually
@@ -70,5 +71,19 @@ if (btnReset) {
 // respective DOM elements to reflect their current saved value
 window.addEventListener("load", async (): Promise<void> => {
     await loadElementPreferences();
-    inputElements.forEach((element: HTMLInputElement) => element.addEventListener("change", onPreferenceChanged));
+
+    // Open OS dialog when user selects to open an audio file
+    if (audioFileButton) {
+        audioFileButton.addEventListener("click", async (): Promise<void> => {
+            const filePath: string | undefined = await window.electron.invoke<string | undefined>("openAudioFile");
+            const audioInput: HTMLInputElement | null = document.querySelector("input[data-pref-name='audioNotify.filePath']");
+            if (!filePath || !audioInput) return;
+
+            audioInput.value = filePath;
+            audioInput.dispatchEvent(new Event("change"));
+        });
+    }
+
+    // Change preference values when an `<input />` element is modified
+    inputElements.forEach((element: HTMLInputElement): void => element.addEventListener("change", onPreferenceChanged));
 });
