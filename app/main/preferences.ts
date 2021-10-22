@@ -35,6 +35,7 @@ export const createPreferencesWindow = async (): Promise<void> => {
         autoHideMenuBar: true,
         webPreferences: {
             contextIsolation: true,
+            defaultFontSize: 12,
             nodeIntegration: false,
             preload: path.join(__dirname, "preload_app.bundle.js")
         }
