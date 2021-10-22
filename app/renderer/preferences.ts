@@ -1,4 +1,5 @@
 const btnReset: HTMLElement | null = document.getElementById("btnReset");
+const btnTestNotification: HTMLElement | null = document.getElementById("btnTestNotification");
 const audioFileButton: HTMLButtonElement | null = document.querySelector("button#audioBtn");
 const inputElements: NodeListOf<HTMLInputElement> = document.querySelectorAll("input[data-pref-name]");
 
@@ -57,16 +58,6 @@ const setInputValue = (element: HTMLInputElement, value: unknown): void => {
     }
 };
 
-// When the "Reset Preferences" button is clicked, call the main process to reset all
-// user preferences. Once that finishes, reload all DOM elements on the page with their
-// default values retrieved from `electron-store`.
-if (btnReset) {
-    btnReset.addEventListener("click", async (): Promise<void> => {
-        window.electron.send("resetPreferences");
-        await loadElementPreferences();
-    });
-}
-
 // When the page loads, grab all of the saved user preferences and update their
 // respective DOM elements to reflect their current saved value
 window.addEventListener("load", async (): Promise<void> => {
@@ -81,6 +72,23 @@ window.addEventListener("load", async (): Promise<void> => {
 
             audioInput.value = filePath;
             audioInput.dispatchEvent(new Event("change"));
+        });
+    }
+
+    // When the "Reset Preferences" button is clicked, call the main process to reset all
+    // user preferences. Once that finishes, reload all DOM elements on the page with their
+    // default values retrieved from `electron-store`.
+    if (btnReset) {
+        btnReset.addEventListener("click", async (): Promise<void> => {
+            window.electron.send("resetPreferences");
+            await loadElementPreferences();
+        });
+    }
+
+    // Send IPC to Slack to test notification sound, if button is pressed
+    if (btnTestNotification) {
+        btnTestNotification.addEventListener("click", (): void => {
+            window.electron.send("testNotification");
         });
     }
 

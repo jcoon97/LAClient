@@ -73,6 +73,12 @@ export class NotificationManager {
         }
     }
 
+    test(): void {
+        if (this.canPlay && !this.isPlaying) {
+            this.element?.play();
+        }
+    }
+
     static getManager(): NotificationManager {
         if (!NotificationManager.INSTANCE) {
             NotificationManager.INSTANCE = new NotificationManager();

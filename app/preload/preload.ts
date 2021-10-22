@@ -7,7 +7,8 @@ const validChannels: IpcChannelName[] = [
     "onPreferenceUpdated",
     "onPreferencesReset",
     "resetPreferences",
-    "setPreference"
+    "setPreference",
+    "testNotification"
 ];
 
 export const ipcReceive = <T = void>(channel: IpcChannelName, callback: (args?: T) => void): void => {

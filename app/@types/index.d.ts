@@ -5,7 +5,8 @@ declare type IpcChannelName =
     | "onPreferenceUpdated"
     | "onPreferencesReset"
     | "resetPreferences"
-    | "setPreference";
+    | "setPreference"
+    | "testNotification";
 
 declare interface IpcPreference {
     key?: string;

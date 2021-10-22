@@ -99,3 +99,9 @@ ipcMain.on("setPreference", (_, args: IpcSetPreference): void => {
     const mainWindow: BrowserWindow | undefined = windowManager.getWindow(WindowName.SLACK);
     if (mainWindow) mainWindow.webContents.send("onPreferenceUpdated", args);
 });
+
+// If the user clicks to test their notification sound, send an IPC to Slack's preload instance
+ipcMain.on("testNotification", (): void => {
+    const mainWindow: BrowserWindow | undefined = windowManager.getWindow(WindowName.SLACK);
+    if (mainWindow) mainWindow.webContents.send("testNotification");
+});

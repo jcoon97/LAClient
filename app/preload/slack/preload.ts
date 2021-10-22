@@ -76,9 +76,14 @@ const registerPreferencesReset = (): void => {
     ipcReceive("onPreferencesReset", async (): Promise<void> => await loadTimer(true));
 };
 
+const registerTestNotification = (): void => {
+    ipcReceive("testNotification", (): void => notificationManager.test());
+};
+
 window.addEventListener("load", async (): Promise<void> => {
     await loadTimer();
     await notificationManager.loadOptions();
     registerPreferenceUpdated();
     registerPreferencesReset();
+    registerTestNotification();
 });
