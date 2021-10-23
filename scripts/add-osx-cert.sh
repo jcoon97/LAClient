@@ -11,7 +11,11 @@ security default-keychain -s $KEY_CHAIN
 
 security unlock-keychain -p travis $KEY_CHAIN
 
-security import $CERTIFICATE_P12 -k $KEY_CHAIN -P $CERT_OSX_PASSWORD -T /usr/bin/codesign;
+security import $CERTIFICATE_P12 -k $KEY_CHAIN -P $CERT_OSX_PASSWORD -T /usr/bin/codesign
+
+security list-keychains
+
+security find-identity -v
 
 security set-key-partition-list -S apple-tool:,apple: -s -k travis $KEY_CHAIN
 
