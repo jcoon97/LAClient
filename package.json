@@ -1,5 +1,6 @@
 {
   "name": "laclient",
+  "productName": "LAClient",
   "description": "Electron-based Slack wrapper with auto-refresh functionality for 2U Learning Assistants",
   "author": {
     "name": "James Coon",
