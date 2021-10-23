@@ -9,8 +9,11 @@
   "files": [
     "build/**/*",
     "node_modules",
+    "scripts",
+    "entitlements.mac.plist",
     "package.json"
   ],
+  "afterSign": "scripts/afterSign.js",
   "dmg": {
     "background": null,
     "backgroundColor": "#ffffff",
@@ -25,6 +28,10 @@
   },
   "mac": {
     "category": "public.app-category.utilities",
+    "entitlements": "entitlements.mac.plist",
+    "entitlementsInherit": "entitlements.mac.plist",
+    "gatekeeperAssess": false,
+    "hardenedRuntime": true,
     "target": "dmg"
   },
   "win": {
