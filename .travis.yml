@@ -9,6 +9,13 @@ before_install:
   - npm install -g pnpm
   - pnpm config set store-dir ~/.pnpm-store
 
+before_script:
+  - |
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      chmod +x $TRAVIS_BUILD_DIR/scripts/add-osx-cert.sh;
+      sh $TRAVIS_BUILD_DIR/scripts/add-osx-cert.sh;
+    fi
+
 cache:
   npm: false
   directories:

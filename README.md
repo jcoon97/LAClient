@@ -82,15 +82,15 @@ By default, when you run the application for the first time, the following defau
     * Timeout (`number`: `30`) — Specifies the amount of time (in seconds) that must elapse before a notification can be
       played again, if one has already recently played. If you would only like one notification to play per minute, then
       this value should be set to `60`.
-    * Playback Volume (`number`:`0.5`) — Specifies the volume this notification will play at. The range slider goes from
+    * Playback Volume (`number`: `0.5`) — Specifies the volume this notification will play at. The range slider goes from
       0.0 (silent) to 1.0 (the loudest).
 
 Please see the following for some notes regarding LAClient and its usage:
 
 * You must be present in the AskBCS queue for it to automatically refresh. If you switch to another channel, public or
   private, this functionality will halt until you return to the AskBCS Learning Assistant app on Slack.
-* Since Electron is a wrapper for Chromium, currently, there are only 3 supported audio files that may be used: `mp3`
-  , `m4a`/`mp4`, and `ogg`. Unfortunately, at the time of writing, `wav` files are not supported in LAClient.
+* Since Electron is a wrapper for Chromium, currently, there are only 3 supported audio files that may be used: `mp3`,
+  `m4a`/`mp4`, and `ogg`. Unfortunately, at the time of writing, `wav` files are not supported in LAClient.
 * Since audio files are played by reading the data using an absolute path on your PC, the selected audio file must
   remain present on your PC at the exact location for future use. There are plans to cache audio files so this is not
   necessary, but that feature has yet to be implemented.
