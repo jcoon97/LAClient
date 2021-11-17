@@ -64,6 +64,7 @@ const registerPreferenceUpdated = (): void => {
         // Update NotificationManager if audio preferences are modified
         if (args?.key === "audioNotify.enabled"
             || args?.key === "audioNotify.filePath"
+            || args?.key === "audioNotify.timeout"
             || args?.key === "audioNotify.volume") {
             await notificationManager.loadOptions();
         }
