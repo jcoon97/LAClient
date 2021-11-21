@@ -52,11 +52,21 @@ ipcMain.handle("getNotificationSound", async (): Promise<string | undefined> => 
     const filePath: string | null = <string | null>electronStore.get("audioNotify.filePath");
 
     if (enabled && filePath) {
-        const mimeType: string | false = mime.lookup(path.extname(filePath));
-        if (!mimeType) return undefined;
+        try {
+            const mimeType: string | false = mime.lookup(path.extname(filePath));
+            if (!mimeType) return undefined;
 
-        const data: Buffer = await readFile(filePath);
-        return dataurl.convert({ data, mimetype: mimeType });
+            const data: Buffer = await readFile(filePath);
+            return dataurl.convert({ data, mimetype: mimeType });
+        } catch {
+            await dialog.showMessageBox({
+                type: "warning",
+                title: "File Not Found",
+                message: "Failed to find notification file",
+                detail: "Confirm that the previously selected notification file still exists on your PC. Audio " +
+                    "notifications will no longer work until a new file path is chosen."
+            });
+        }
     }
     return undefined;
 });
