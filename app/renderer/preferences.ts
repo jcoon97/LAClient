@@ -3,6 +3,8 @@ const btnTestNotification: HTMLElement | null = document.getElementById("btnTest
 const audioFileButton: HTMLButtonElement | null = document.querySelector("button#audioBtn");
 const inputElements: NodeListOf<HTMLInputElement> = document.querySelectorAll("input[data-pref-name]");
 
+const MIN_AUDIO_TIMEOUT: number = 5; // 5 Seconds
+
 // When setting a new value, grab the "value" from the element. For example, it will usually
 // be the text value; however, on some elements, it may be `checked` or another value
 const getInputValue = (element: HTMLInputElement): unknown => {
@@ -36,10 +38,15 @@ const loadElementPreferences = async () => {
 const onPreferenceChanged = (event: Event): void => {
     const element: HTMLInputElement = <HTMLInputElement>event.target;
     const prefName: string | null = element.getAttribute("data-pref-name");
-    const prefValue: unknown = getInputValue(element);
+    let prefValue: unknown = getInputValue(element);
 
     if (!prefName) return;
     if (typeof prefValue !== "boolean" && !prefValue) return;
+
+    if (prefName === "autoRefresh.interval" && (prefValue as number) < MIN_AUDIO_TIMEOUT) {
+        setInputValue(element, MIN_AUDIO_TIMEOUT);
+        (prefValue as number) = MIN_AUDIO_TIMEOUT;
+    }
 
     window.electron.send<IpcSetPreference>("setPreference", {
         key: prefName,
