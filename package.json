@@ -25,7 +25,6 @@
     "pack": "pnpm run cleanbuild && electron-builder --publish never",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "electron-builder install-app-deps",
-    "release": "pnpm run cleanbuild && electron-builder --publish always",
     "start:dev": "cross-env ELECTRON_IS_DEV=1 electron ./build/electron.bundle.js"
   },
   "devDependencies": {
