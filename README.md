@@ -1,9 +1,9 @@
 # LAClient
 
-![Travis (.com)](https://img.shields.io/travis/com/jcoon97/LAClient?style=flat-square)
-![GitHub issues](https://img.shields.io/github/issues/jcoon97/LAClient?style=flat-square)
-![GitHub](https://img.shields.io/github/license/jcoon97/LAClient?style=flat-square)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/jcoon97/LAClient?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/jcoon97/LAClient/Build%20&%20Deploy?label=GitHub%20Actions&style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/jcoon97/LAClient?label=Reported%20Issues&style=flat-square)
+![GitHub](https://img.shields.io/github/license/jcoon97/LAClient?label=License&style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/jcoon97/LAClient?label=Current%20Release&style=flat-square)
 
 > An Electron-based Slack wrapper with auto-refresh and audio notifications for 2U Learning Assistants
 
@@ -26,7 +26,7 @@ Learning Assistants that provides features such as automatic queue refreshing, a
 
 Below you may find a list of features that are planned for LAClient that have yet to be implemented:
 
-* Desktop Notifications
+* ~~Desktop Notifications~~
 * Audio/Desktop alert if an error occurs during an automatic refresh (e.g. AskBCS and/or Slack goes down)
 * Automatic application updating via Electron and GitHub Releases
 * Caching audio files, so they are not required to remain present on the hard drive
