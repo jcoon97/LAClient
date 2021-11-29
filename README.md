@@ -1,9 +1,10 @@
 # LAClient
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/jcoon97/LAClient/Build%20&%20Deploy?label=GitHub%20Actions&style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/jcoon97/LAClient?label=Current%20Release&style=flat-square)
+![GitHub all releases](https://img.shields.io/github/downloads/jcoon97/LAClient/total?label=Total%20Downloads&style=flat-square)
 ![GitHub issues](https://img.shields.io/github/issues/jcoon97/LAClient?label=Reported%20Issues&style=flat-square)
 ![GitHub](https://img.shields.io/github/license/jcoon97/LAClient?label=License&style=flat-square)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/jcoon97/LAClient?label=Current%20Release&style=flat-square)
 
 > An Electron-based Slack wrapper with auto-refresh and audio notifications for 2U Learning Assistants
 
