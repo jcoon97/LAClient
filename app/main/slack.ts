@@ -18,7 +18,7 @@ export const createSlackWindow = async (): Promise<void> => {
     });
 
     if (window) {
-        await window.loadURL("https://trilobot.slack.com");
+        await window.loadURL("https://learning-assistants.slack.com");
         contextMenu({ window });
 
         window.webContents.setWindowOpenHandler(({ url }: HandlerDetails) => {

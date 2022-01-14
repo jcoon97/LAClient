@@ -30,7 +30,7 @@ Below you may find a list of features that are planned for LAClient that have ye
 * ~~Desktop Notifications~~
 * Audio/Desktop alert if an error occurs during an automatic refresh (e.g. AskBCS and/or Slack goes down)
 * Automatic application updating via Electron and GitHub Releases
-* Caching audio files, so they are not required to remain present on the hard drive
+* Caching audio files so that they are not required to remain present on the hard drive
 * Bug fixes as they are reported, as usual
 
 <br>
@@ -51,7 +51,7 @@ similar on Linux, Launchpad on Mac OSX, or Search on Windows.
 ## First Time Setup
 
 Once the application has been downloaded and installed, when you first open it, you will be prompted to log in to
-Trilobot's workspace. You may use the same credentials that you would use if logging in via Slack's website in your
+Learning Assistant's workspace. You may use the same credentials that you would use if logging in via Slack's website in your
 favorite web browser or via Slack's Desktop application.
 
 When you log in, Slack may automatically open its own Desktop application and bring it to the foreground. In this case,
@@ -61,7 +61,7 @@ click on "use Slack in your browser."
 <br> 
 
 <p align="center">
-    <img src="screenshots/open-slack-in-browser.png" alt="Open Slack in Browser" />
+    <img src="screenshots/la-open-slack-browser.png" alt="Open Slack in Browser" />
 </p>
 
 <br>
