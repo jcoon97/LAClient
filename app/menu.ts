@@ -75,8 +75,8 @@ const linuxWindowsTemplate: MenuItemConstructorOptions[] = [
 
 export const setApplicationMenu = (): void => {
     const menuItems: MenuItemConstructorOptions[] = process.platform === "darwin"
-        ? darwinTemplate :
-        linuxWindowsTemplate;
+        ? darwinTemplate
+        : linuxWindowsTemplate;
 
     const menu: Menu = Menu.buildFromTemplate(menuItems);
     Menu.setApplicationMenu(menu);
