@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "main": "./build/electron.bundle.js",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jcoon97/LAClient.git"
