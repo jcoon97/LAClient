@@ -33,7 +33,7 @@ jobs:
       - name: Install PNPM package manager
         uses: pnpm/action-setup@v2.0.1
         with:
-          version: 6.22.2
+          version: 6.28.0
 
       - name: Build & Release Electron application
         uses: jcoon97/action-electron-builder@v1.7.0

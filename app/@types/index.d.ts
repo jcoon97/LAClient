@@ -1,5 +1,5 @@
 declare type IpcChannelName =
-    "getNotificationSound"
+    | "getNotificationSound"
     | "getPreference"
     | "openAudioFile"
     | "onPreferenceUpdated"
@@ -44,10 +44,16 @@ declare type PreferencesStore = {
         enabled: boolean;
 
         /**
+         * If enabled, LAClient will play audio notifications if the user is currently
+         * looking at the AskBCS queue or another channel by running a background worker
+         */
+        backgroundWorker: boolean;
+
+        /**
          * The absolute file path to the audio file that will be played when a new
          * question is found in the AskBCS queue
          */
-        filePath: string | undefined
+        filePath: string | undefined;
 
         /**
          * The amount of time (in seconds) that should elapse before a new notification
@@ -60,8 +66,8 @@ declare type PreferencesStore = {
          * the range is from 0.0 to 1.0.
          */
         volume: number;
-    }
-}
+    };
+};
 
 declare interface Window {
     electron: {
@@ -81,7 +87,7 @@ declare interface Window {
          * Although this message will be sent asynchronously to the main process, it will not
          * expect a response to be sent back. If you wish to receive a response, then please use
          * {@link Window.electron.invoke} instead, which will return a `Promise` with a value that
-         * can be casted to the appropriate type.
+         * can be cast to the appropriate type.
          *
          * @param channel - The channel name that the main process will use to process this message
          * @param args - The argument(s) that will be sent to the main process with this message

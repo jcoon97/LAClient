@@ -1,0 +1,6 @@
+.github
+.idea
+build
+node_modules
+public
+screenshots

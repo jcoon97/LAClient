@@ -39,7 +39,7 @@ const loadTimer = async (reload?: boolean): Promise<void> => {
 const notificationManager: NotificationManager = NotificationManager.getManager();
 
 const onRefresh = async (): Promise<void> => {
-    const regex: RegExp = /(AVAILABLE QUESTIONS|IN CLASS ACTIVITY QUESTIONS)/i;
+    const regex = /(AVAILABLE QUESTIONS|IN CLASS ACTIVITY QUESTIONS)/i;
     const found: number = document.body.innerHTML.search(regex);
     if (found !== -1) await notificationManager.play();
 };
@@ -62,10 +62,12 @@ const registerPreferenceUpdated = (): void => {
         }
 
         // Update NotificationManager if audio preferences are modified
-        if (args?.key === "audioNotify.enabled"
-            || args?.key === "audioNotify.filePath"
-            || args?.key === "audioNotify.timeout"
-            || args?.key === "audioNotify.volume") {
+        if (
+            args?.key === "audioNotify.enabled" ||
+            args?.key === "audioNotify.filePath" ||
+            args?.key === "audioNotify.timeout" ||
+            args?.key === "audioNotify.volume"
+        ) {
             await notificationManager.loadOptions();
         }
     });
@@ -78,7 +80,7 @@ const registerPreferencesReset = (): void => {
 };
 
 const registerTestNotification = (): void => {
-    ipcReceive("testNotification", (): void => notificationManager.test());
+    ipcReceive("testNotification", async (): Promise<void> => notificationManager.test());
 };
 
 window.addEventListener("load", async (): Promise<void> => {

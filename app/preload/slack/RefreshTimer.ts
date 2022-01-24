@@ -45,7 +45,7 @@ export class RefreshTimer {
 
     startTimer(): void {
         if (this.timerId) return;
-        this.timerId = setInterval(this.run.bind(this), (this.options.refreshRate * 1000));
+        this.timerId = setInterval(this.run.bind(this), this.options.refreshRate * 1000);
     }
 
     stopTimer(): void {
