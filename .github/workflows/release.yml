@@ -3,7 +3,8 @@ name: Build & Deploy
 on:
   push:
     tags:
-      - v[0-9]+.[0-9]+.[0-9]+(?:-rc.[0-9]+)?
+      - v[0-9]+.[0-9]+.[0-9]+
+      - v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+
 
 jobs:
   release:
@@ -25,10 +26,10 @@ jobs:
       - name: Cache PNPM modules
         uses: actions/cache@v2
         with:
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           path: ~/.pnpm-store
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-${{ secrets.CACHE_VERSION }}-
 
       - name: Install PNPM package manager
         uses: pnpm/action-setup@v2.0.1
