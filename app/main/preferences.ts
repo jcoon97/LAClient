@@ -5,10 +5,11 @@ import ElectronStore from "electron-store";
 import { readFile } from "fs/promises";
 import mime from "mime-types";
 import path from "path";
-import { WindowManager, WindowName } from "../WindowManager";
+import { AnyWindow, WindowManager, WindowName, WorkerWindowName } from "../WindowManager";
+import { createSlackWorkerWindow } from "./slack";
 
 // @ts-ignore
-const electronStore: ElectronStore = new ElectronStore<PreferencesStore>({
+export const electronStore: ElectronStore = new ElectronStore<PreferencesStore>({
     clearInvalidConfig: true,
     defaults: {
         autoRefresh: {
@@ -17,6 +18,7 @@ const electronStore: ElectronStore = new ElectronStore<PreferencesStore>({
         },
         audioNotify: {
             enabled: false, // Default to audio notifications being disabled
+            backgroundWorker: false, // Default to no background worker for audio notifications
             filePath: undefined, // Default to no file path on PC (audio won't play until this is changed)
             timeout: 30, // Default to 30 seconds between notification plays
             volume: 0.5 // Default to middle volume (range is from 0.0 to 1.0)
@@ -24,6 +26,7 @@ const electronStore: ElectronStore = new ElectronStore<PreferencesStore>({
     }
 });
 
+const slackAndWorker: AnyWindow[] = [WindowName.ASKBCS_SLACK, WorkerWindowName.ASKBCS_SLACK_WORKER];
 const windowManager: WindowManager = WindowManager.getManager();
 
 export const createPreferencesWindow = async (): Promise<void> => {
@@ -97,21 +100,39 @@ ipcMain.handle("openAudioFile", async (): Promise<string | null> => {
 // user indicates that they would like to reset all preferences via an action (e.g. button click)
 ipcMain.on("resetPreferences", (): void => {
     electronStore.clear();
-    const mainWindow: BrowserWindow | undefined = windowManager.getWindow(WindowName.SLACK);
-    if (mainWindow) mainWindow.webContents.send("onPreferencesReset");
+    const slackWindows: BrowserWindow[] = windowManager.getAnyWindows(slackAndWorker);
+
+    if (slackWindows.length > 0) {
+        slackWindows.forEach((window: BrowserWindow) => window.webContents.send("onPreferencesReset"));
+    }
 });
 
 // Modify the specified name (key) to have the specified value in the user's settings file.
 // Additionally, once the modification has been made, send a notification to the Slack renderer
 // process to allow any updates to persist across windows (e.g. enable/disable refresh timer, etc.)
-ipcMain.on("setPreference", (_, args: IpcSetPreference): void => {
+ipcMain.on("setPreference", async (_, args: IpcSetPreference): Promise<void> => {
     electronStore.set(args.key, args.value);
-    const mainWindow: BrowserWindow | undefined = windowManager.getWindow(WindowName.SLACK);
-    if (mainWindow) mainWindow.webContents.send("onPreferenceUpdated", args);
+
+    // If the preference being updated is enabling/disabled a background worker, spawn a process if necessary
+    if (args.key === "audioNotify.backgroundWorker") {
+        if (args.value as boolean) {
+            await createSlackWorkerWindow();
+        } else {
+            const slackWorker = windowManager.getWorkerWindow(WorkerWindowName.ASKBCS_SLACK_WORKER);
+            if (slackWorker) slackWorker.close();
+        }
+    }
+
+    // Update all Slack windows, including any worker window(s)
+    const slackWindows: BrowserWindow[] = windowManager.getAnyWindows(slackAndWorker);
+
+    if (slackWindows.length > 0) {
+        slackWindows.forEach((window: BrowserWindow) => window.webContents.send("onPreferenceUpdated", args));
+    }
 });
 
 // If the user clicks to test their notification sound, send an IPC to Slack's preload instance
 ipcMain.on("testNotification", (): void => {
-    const mainWindow: BrowserWindow | undefined = windowManager.getWindow(WindowName.SLACK);
+    const mainWindow: BrowserWindow | undefined = windowManager.getWindow(WindowName.ASKBCS_SLACK);
     if (mainWindow) mainWindow.webContents.send("testNotification");
 });
