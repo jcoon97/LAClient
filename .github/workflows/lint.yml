@@ -1,0 +1,39 @@
+name: Lint
+
+on:
+  - pull_request
+  - push
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Cache PNPM modules
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ~/.pnpm-store
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - name: Install PNPM package manager
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.28.0
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint & Format
+        run: |
+          pnpm lint
+          pnpm format
