@@ -11,8 +11,8 @@ export class NotificationManager {
     private static INSTANCE: NotificationManager | undefined;
 
     private element: HTMLAudioElement | undefined;
-    private canPlay: boolean = false;
-    private isPlaying: boolean = false;
+    private canPlay = false;
+    private isPlaying = false;
     private lastPlayed: number | undefined;
 
     private options: NotificationPreferences | undefined;
@@ -26,14 +26,14 @@ export class NotificationManager {
         }
     }
 
-    private async loadAudio(): Promise<void> {
+    private loadAudio(): void {
         if (!this.options || !this.options.srcUrl) return;
         this.element = new Audio(this.options.srcUrl);
         this.element.volume = this.options.volume;
 
-        this.element.addEventListener("canplaythrough", (): boolean => this.canPlay = true);
-        this.element.addEventListener("ended", (): boolean => this.isPlaying = false);
-        this.element.addEventListener("play", (): boolean => this.isPlaying = true);
+        this.element.addEventListener("canplaythrough", (): boolean => (this.canPlay = true));
+        this.element.addEventListener("ended", (): boolean => (this.isPlaying = false));
+        this.element.addEventListener("play", (): boolean => (this.isPlaying = true));
     }
 
     async loadOptions(): Promise<void> {
@@ -58,24 +58,24 @@ export class NotificationManager {
 
         // Update our preferences and load a new Audio class instance
         this.options = { ...this.options, enabled, srcUrl, timeout, volume };
-        await this.loadAudio();
+        this.loadAudio();
     }
 
-    play(): void {
+    async play(): Promise<void> {
         if (this.options?.enabled && this.canPlay && !this.isPlaying) {
             // Check and confirm that a previous notification sound didn't just play. If it
-            // did and we have not reached the user-defined timeout period, then don't play
+            // did, and we have not reached the user-defined timeout period, then don't play
             // the notification until that condition is met. Otherwise, play the notification.
             const currentTime: number = Math.floor(Date.now() / 1000);
-            if (this.lastPlayed && ((currentTime - this.lastPlayed) < this.options.timeout)) return;
-            this.element?.play();
+            if (this.lastPlayed && currentTime - this.lastPlayed < this.options.timeout) return;
+            await this.element?.play();
             this.lastPlayed = currentTime;
         }
     }
 
-    test(): void {
+    async test(): Promise<void> {
         if (this.canPlay && !this.isPlaying) {
-            this.element?.play();
+            await this.element?.play();
         }
     }
 

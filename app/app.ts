@@ -3,7 +3,7 @@ import * as process from "process";
 import { createSlackWindow } from "./main/slack";
 import { setApplicationMenu } from "./menu";
 
-export const BASE_REPOSITORY_URL: string = "https://github.com/jcoon97/LAClient";
+export const BASE_REPOSITORY_URL = "https://github.com/jcoon97/LAClient";
 
 app.on("activate", async (): Promise<void> => {
     if (BrowserWindow.getAllWindows().length === 0) {

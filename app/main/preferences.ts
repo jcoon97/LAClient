@@ -63,7 +63,8 @@ ipcMain.handle("getNotificationSound", async (): Promise<string | undefined> => 
                 type: "warning",
                 title: "File Not Found",
                 message: "Failed to find notification file",
-                detail: "Confirm that the previously selected notification file still exists on your PC. Audio " +
+                detail:
+                    "Confirm that the previously selected notification file still exists on your PC. Audio " +
                     "notifications will no longer work until a new file path is chosen."
             });
         }
@@ -82,10 +83,8 @@ ipcMain.handle("getPreference", (_, args: IpcGetPreference): unknown => {
 ipcMain.handle("openAudioFile", async (): Promise<string | null> => {
     const dialogValues: OpenDialogReturnValue = await dialog.showOpenDialog({
         title: "Select Notification Sound",
-        filters: [
-            { name: "Audio Files", extensions: [ "mp3", "m4a", "ogg" ] }
-        ],
-        properties: [ "openFile" ]
+        filters: [{ name: "Audio Files", extensions: ["mp3", "m4a", "ogg"] }],
+        properties: ["openFile"]
     });
 
     if (!dialogValues.canceled && dialogValues.filePaths.length > 0) {
