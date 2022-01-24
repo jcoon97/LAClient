@@ -16,7 +16,7 @@ const helpSubmenu: MenuItemConstructorOptions[] = [
         click: async () => await shell.openExternal(BASE_REPOSITORY_URL + "/releases")
     },
     { type: "separator" },
-    { label: `Current Version: ${ app.getVersion() }` }
+    { label: `Current Version: ${app.getVersion()}` }
 ];
 
 const darwinTemplate: MenuItemConstructorOptions[] = [
@@ -33,7 +33,7 @@ const darwinTemplate: MenuItemConstructorOptions[] = [
             { type: "separator" },
             { role: "close" },
             {
-                label: `Quit ${ app.getName() }`,
+                label: `Quit ${app.getName()}`,
                 accelerator: "CmdOrCtrl+Q",
                 role: "quit"
             }
@@ -54,7 +54,7 @@ const linuxWindowsTemplate: MenuItemConstructorOptions[] = [
         submenu: [
             { role: "close" },
             {
-                label: `Quit ${ app.getName() }`,
+                label: `Quit ${app.getName()}`,
                 accelerator: "CmdOrCtrl+Q",
                 role: "quit"
             }
@@ -74,9 +74,8 @@ const linuxWindowsTemplate: MenuItemConstructorOptions[] = [
 ];
 
 export const setApplicationMenu = (): void => {
-    const menuItems: MenuItemConstructorOptions[] = process.platform === "darwin"
-        ? darwinTemplate
-        : linuxWindowsTemplate;
+    const menuItems: MenuItemConstructorOptions[] =
+        process.platform === "darwin" ? darwinTemplate : linuxWindowsTemplate;
 
     const menu: Menu = Menu.buildFromTemplate(menuItems);
     Menu.setApplicationMenu(menu);

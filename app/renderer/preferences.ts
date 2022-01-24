@@ -3,7 +3,7 @@ const btnTestNotification: HTMLElement | null = document.getElementById("btnTest
 const audioFileButton: HTMLButtonElement | null = document.querySelector("button#audioBtn");
 const inputElements: NodeListOf<HTMLInputElement> = document.querySelectorAll("input[data-pref-name]");
 
-const MIN_AUDIO_TIMEOUT: number = 5; // 5 Seconds
+const MIN_AUDIO_TIMEOUT = 5; // 5 Seconds
 
 // When setting a new value, grab the "value" from the element. For example, it will usually
 // be the text value; however, on some elements, it may be `checked` or another value
@@ -65,7 +65,7 @@ const setInputValue = (element: HTMLInputElement, value: unknown): void => {
     }
 };
 
-// When the page loads, grab all of the saved user preferences and update their
+// When the page loads, grab all the saved user preferences and update their
 // respective DOM elements to reflect their current saved value
 window.addEventListener("load", async (): Promise<void> => {
     await loadElementPreferences();
@@ -74,7 +74,9 @@ window.addEventListener("load", async (): Promise<void> => {
     if (audioFileButton) {
         audioFileButton.addEventListener("click", async (): Promise<void> => {
             const filePath: string | undefined = await window.electron.invoke<string | undefined>("openAudioFile");
-            const audioInput: HTMLInputElement | null = document.querySelector("input[data-pref-name='audioNotify.filePath']");
+            const audioInput: HTMLInputElement | null = document.querySelector(
+                "input[data-pref-name='audioNotify.filePath']"
+            );
             if (!filePath || !audioInput) return;
 
             audioInput.value = filePath;
