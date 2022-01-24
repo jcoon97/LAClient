@@ -30,17 +30,20 @@ const slackAndWorker: AnyWindow[] = [WindowName.ASKBCS_SLACK, WorkerWindowName.A
 const windowManager: WindowManager = WindowManager.getManager();
 
 export const createPreferencesWindow = async (): Promise<void> => {
-    const window: BrowserWindow | null = windowManager.createWindow(WindowName.PREFERENCES, {
-        height: 600,
-        width: 1000,
-        maximizable: false,
-        resizable: false,
-        autoHideMenuBar: true,
-        webPreferences: {
-            contextIsolation: true,
-            defaultFontSize: 12,
-            nodeIntegration: false,
-            preload: path.join(__dirname, "preload_app.bundle.js")
+    const window: BrowserWindow | null = windowManager.createWindow({
+        name: WindowName.PREFERENCES,
+        windowOptions: {
+            height: 600,
+            width: 1000,
+            maximizable: false,
+            resizable: false,
+            autoHideMenuBar: true,
+            webPreferences: {
+                contextIsolation: true,
+                defaultFontSize: 12,
+                nodeIntegration: false,
+                preload: path.join(__dirname, "preload_app.bundle.js")
+            }
         }
     });
 

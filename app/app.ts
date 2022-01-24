@@ -6,18 +6,22 @@ import { setApplicationMenu } from "./menu";
 
 export const BASE_REPOSITORY_URL = "https://github.com/jcoon97/LAClient";
 
-app.on("activate", async (): Promise<void> => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-        await createSlackWindow();
-    }
-});
-
-app.on("ready", async (): Promise<void> => {
+const bootstrapWindows = async (): Promise<void> => {
     await createSlackWindow();
 
     if (electronStore.get("audioNotify.backgroundWorker") as boolean) {
         await createSlackWorkerWindow();
     }
+};
+
+app.on("activate", async (): Promise<void> => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+        await bootstrapWindows();
+    }
+});
+
+app.on("ready", async (): Promise<void> => {
+    await bootstrapWindows();
 });
 
 app.on("window-all-closed", (): void => {

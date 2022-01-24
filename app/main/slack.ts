@@ -12,14 +12,18 @@ const ASKBCS_URL = `https://app.slack.com/client/${SLACK_WORKSPACE_ID}/${SLACK_A
 const windowManager: WindowManager = WindowManager.getManager();
 
 export const createSlackWindow = async (): Promise<void> => {
-    const window: BrowserWindow | null = windowManager.createWindow(WindowName.ASKBCS_SLACK, {
-        height: 800,
-        width: 1200,
-        webPreferences: {
-            contextIsolation: true,
-            nodeIntegration: false,
-            preload: path.join(__dirname, "preload_slack.bundle.js"),
-            spellcheck: true
+    const window: BrowserWindow | null = windowManager.createWindow({
+        name: WindowName.ASKBCS_SLACK,
+        onClosed: onSlackClosed,
+        windowOptions: {
+            height: 800,
+            width: 1200,
+            webPreferences: {
+                contextIsolation: true,
+                nodeIntegration: false,
+                preload: path.join(__dirname, "preload_slack.bundle.js"),
+                spellcheck: true
+            }
         }
     });
 
@@ -35,14 +39,27 @@ export const createSlackWindow = async (): Promise<void> => {
 };
 
 export const createSlackWorkerWindow = async (): Promise<void> => {
-    const workerWindow: BrowserWindow | null = windowManager.createWorkerWindow(WorkerWindowName.ASKBCS_SLACK_WORKER, {
-        webPreferences: {
-            backgroundThrottling: false,
-            contextIsolation: true,
-            nodeIntegration: false,
-            preload: path.join(__dirname, "preload_slack.bundle.js")
+    const workerWindow: BrowserWindow | null = windowManager.createWorkerWindow({
+        name: WorkerWindowName.ASKBCS_SLACK_WORKER,
+        windowOptions: {
+            webPreferences: {
+                backgroundThrottling: false,
+                contextIsolation: true,
+                nodeIntegration: false,
+                preload: path.join(__dirname, "preload_slack.bundle.js")
+            }
         }
     });
 
     if (workerWindow) await workerWindow.loadURL(ASKBCS_URL);
+};
+
+/**
+ * If the main Slack window is closed, then we should also close out the background
+ * worker process, too. This way, the user is not receiving audio notifications if the
+ * application is supposed to be closed.
+ */
+const onSlackClosed = (): void => {
+    const workerWindow: BrowserWindow | undefined = windowManager.getWorkerWindow(WorkerWindowName.ASKBCS_SLACK_WORKER);
+    if (workerWindow) workerWindow.close();
 };

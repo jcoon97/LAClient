@@ -12,6 +12,14 @@ export enum WorkerWindowName {
 
 export type AnyWindow = WindowName | WorkerWindowName;
 
+export type MaybePromise<T> = T | Promise<T>;
+
+export interface CreateWindowOptions<T extends AnyWindow> {
+    name: T;
+    onClosed?: () => MaybePromise<void>;
+    windowOptions?: BrowserWindowConstructorOptions;
+}
+
 export class WindowManager {
     private static INSTANCE: WindowManager | undefined;
 
@@ -23,9 +31,9 @@ export class WindowManager {
         this.workerWindows = new Map<WorkerWindowName, BrowserWindow>();
     }
 
-    createWindow(name: WindowName, options?: BrowserWindowConstructorOptions): BrowserWindow | null {
-        if (this.windows.has(name)) {
-            const currentWindow: BrowserWindow | undefined = this.windows.get(name);
+    createWindow(options: CreateWindowOptions<WindowName>): BrowserWindow | null {
+        if (this.windows.has(options.name)) {
+            const currentWindow: BrowserWindow | undefined = this.windows.get(options.name);
 
             if (currentWindow) {
                 currentWindow.focus();
@@ -34,47 +42,47 @@ export class WindowManager {
         }
 
         const newWindow: BrowserWindow = new BrowserWindow({
-            ...options,
+            ...options.windowOptions,
             show: false,
             webPreferences: {
-                ...options?.webPreferences,
+                ...options.windowOptions?.webPreferences,
                 devTools: isDev
             }
         });
 
-        newWindow.on("closed", () => this.windows.delete(name));
+        newWindow.on("closed", () => {
+            this.windows.delete(options.name);
+            if (options.onClosed) options.onClosed();
+        });
 
         newWindow.once("ready-to-show", (): void => {
             newWindow.show();
             if (isDev) newWindow.webContents.openDevTools();
         });
 
-        this.windows.set(name, newWindow);
+        this.windows.set(options.name, newWindow);
         return newWindow;
     }
 
-    createWorkerWindow(name: WorkerWindowName, options?: BrowserWindowConstructorOptions): BrowserWindow | null {
-        if (this.workerWindows.has(name)) return null;
+    createWorkerWindow(options: CreateWindowOptions<WorkerWindowName>): BrowserWindow | null {
+        if (this.workerWindows.has(options.name)) return null;
 
         const newWorkerWindow: BrowserWindow = new BrowserWindow({
-            ...options,
+            ...options.windowOptions,
             show: false,
             webPreferences: {
-                ...options?.webPreferences,
+                ...options.windowOptions?.webPreferences,
                 devTools: isDev
             }
         });
 
-        newWorkerWindow.on("closed", () => this.workerWindows.delete(name));
-
-        newWorkerWindow.on("ready-to-show", () => {
-            if (isDev) {
-                newWorkerWindow.show();
-                newWorkerWindow.webContents.openDevTools();
-            }
+        newWorkerWindow.on("closed", () => {
+            this.workerWindows.delete(options.name);
+            if (options.onClosed) options.onClosed();
         });
 
-        this.workerWindows.set(name, newWorkerWindow);
+        if (isDev) newWorkerWindow.once("ready-to-show", () => newWorkerWindow.show());
+        this.workerWindows.set(options.name, newWorkerWindow);
         return newWorkerWindow;
     }
 
