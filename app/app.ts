@@ -1,18 +1,27 @@
 import { app, BrowserWindow } from "electron";
 import * as process from "process";
-import { createSlackWindow } from "./main/slack";
+import { electronStore } from "./main/preferences";
+import { createSlackWindow, createSlackWorkerWindow } from "./main/slack";
 import { setApplicationMenu } from "./menu";
 
 export const BASE_REPOSITORY_URL = "https://github.com/jcoon97/LAClient";
 
+const bootstrapWindows = async (): Promise<void> => {
+    await createSlackWindow();
+
+    if (electronStore.get("audioNotify.backgroundWorker") as boolean) {
+        await createSlackWorkerWindow();
+    }
+};
+
 app.on("activate", async (): Promise<void> => {
     if (BrowserWindow.getAllWindows().length === 0) {
-        await createSlackWindow();
+        await bootstrapWindows();
     }
 });
 
 app.on("ready", async (): Promise<void> => {
-    await createSlackWindow();
+    await bootstrapWindows();
 });
 
 app.on("window-all-closed", (): void => {

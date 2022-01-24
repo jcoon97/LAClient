@@ -44,6 +44,12 @@ declare type PreferencesStore = {
         enabled: boolean;
 
         /**
+         * If enabled, LAClient will play audio notifications if the user is currently
+         * looking at the AskBCS queue or another channel by running a background worker
+         */
+        backgroundWorker: boolean;
+
+        /**
          * The absolute file path to the audio file that will be played when a new
          * question is found in the AskBCS queue
          */

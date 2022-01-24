@@ -85,8 +85,8 @@
             </div>
 
 
-            <!-- Audio Notification: Enabled -->
             <div class="list-group mb-5 shadow">
+                <!-- Audio Notification: Enabled -->
                 <div class="list-group-item">
                     <div class="row align-items-center">
                         <div class="col">
@@ -99,6 +99,25 @@
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input"
                                        data-pref-name="audioNotify.enabled" />
+                                <span class="custom-control-label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Notification: Background Process -->
+                <div class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <strong class="mb-0">Background Process</strong>
+                            <p class="text-muted mb-0">
+                                When checked, LAClient will still play audio notifications for AskBCS when out of focus.
+                            </p>
+                        </div>
+                        <div class="col-auto">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input"
+                                       data-pref-name="audioNotify.backgroundWorker" />
                                 <span class="custom-control-label"></span>
                             </div>
                         </div>
