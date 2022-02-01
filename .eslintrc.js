@@ -13,12 +13,9 @@ module.exports = {
         project: "tsconfig.json",
         sourceType: "module"
     },
-    plugins: [
-        "@typescript-eslint/eslint-plugin"
-    ],
+    plugins: ["@typescript-eslint/eslint-plugin"],
     rules: {
-        "@typescript-eslint/ban-ts-comment": "warn",
         "prettier/prettier": "error"
     },
-    root: true,
+    root: true
 };

@@ -1,5 +1,4 @@
-// @ts-ignore
-import * as dataurl from "dataurl";
+import { stringifyDataUrl } from "dataurl2";
 import { BrowserWindow, dialog, ipcMain, OpenDialogReturnValue } from "electron";
 import ElectronStore from "electron-store";
 import { readFile } from "fs/promises";
@@ -8,8 +7,7 @@ import path from "path";
 import { AnyWindow, WindowManager, WindowName, WorkerWindowName } from "../WindowManager";
 import { createSlackWorkerWindow } from "./slack";
 
-// @ts-ignore
-export const electronStore: ElectronStore = new ElectronStore<PreferencesStore>({
+export const electronStore: ElectronStore<PreferencesStore> = new ElectronStore<PreferencesStore>({
     clearInvalidConfig: true,
     defaults: {
         autoRefresh: {
@@ -63,7 +61,7 @@ ipcMain.handle("getNotificationSound", async (): Promise<string | undefined> => 
             if (!mimeType) return undefined;
 
             const data: Buffer = await readFile(filePath);
-            return dataurl.convert({ data, mimetype: mimeType });
+            return stringifyDataUrl({ data, mimetype: mimeType });
         } catch {
             await dialog.showMessageBox({
                 type: "warning",

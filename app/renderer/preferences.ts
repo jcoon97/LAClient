@@ -77,8 +77,8 @@ window.addEventListener("load", async (): Promise<void> => {
             const audioInput: HTMLInputElement | null = document.querySelector(
                 "input[data-pref-name='audioNotify.filePath']"
             );
-            if (!filePath || !audioInput) return;
 
+            if (!filePath || !audioInput) return;
             audioInput.value = filePath;
             audioInput.dispatchEvent(new Event("change"));
         });
