@@ -1,4 +1,4 @@
-# LAClient
+# LAClient (No Longer Maintained)
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/jcoon97/LAClient/Build%20&%20Deploy?label=GitHub%20Actions&style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/jcoon97/LAClient?label=Current%20Release&style=flat-square)
@@ -7,6 +7,8 @@
 ![GitHub](https://img.shields.io/github/license/jcoon97/LAClient?label=License&style=flat-square)
 
 > An Electron-based Slack wrapper with auto-refresh and audio notifications for 2U Learning Assistants
+
+> ⚠️ This project was created during my time as a 2U employee. Unfortunately, since I am no longer employed with 2U and did not retain access to the necessary systems in order to continue this project, it is marked as "no longer maintaned." If this project is of interest to you, please feel free to fork it to continue further development. If you have any questions regarding this project, please feel free to send me an email (listed on my GitHub profile).
 
 Inspired by [AskAssist](https://github.com/Noxid86/AskAssist), LAClient aims to be an all-in-one Slack wrapper for 2U
 Learning Assistants that provides features such as automatic queue refreshing, audio notifications, and more to come.
